@@ -1,15 +1,36 @@
+using Microsoft.EntityFrameworkCore;
+using PatientHeartRateService.Data;
+using PatientHeartRateService.Repositories;
+using PatientHeartRateService.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Add services to the container
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Entity Framework with In-Memory Database
+builder.Services.AddDbContext<HeartRateContext>(options =>
+    options.UseInMemoryDatabase("HeartRateDB"));
+
+// Register repositories and services for dependency injection
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IHeartRateReadingRepository, HeartRateReadingRepository>();
+builder.Services.AddScoped<IHeartRateService, HeartRateService>();
+builder.Services.AddScoped<IPatientTrackingService, PatientTrackingService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Seed the database with JSON data when app starts
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<HeartRateContext>();
+    var environment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+    await SeedData.Initialize(context, environment);
+}
+
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -17,9 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
