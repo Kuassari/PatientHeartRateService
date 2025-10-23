@@ -2,7 +2,7 @@
 
 A backend service for managing patients and their heart rate readings, built with clean architecture principles.
 
-> 🎯 **Take-Home Assignment** | Company interview process (2024)  
+> 🎯 **Take-Home Assignment** | Company interview process (2025)  
 > **Time Constraint:** 2-3 hours | Built with .NET Core (C#)
 
 
