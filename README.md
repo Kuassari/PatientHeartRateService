@@ -114,10 +114,8 @@ API available at `https://localhost:5001/api`
 - Entity Framework with real database + migrations
 - Authentication & authorization (JWT)
 - Comprehensive unit tests
-- Logging and monitoring
-- API documentation (Swagger)
 - Caching for analytics queries
-
+- Frontend with Reactjs
 
 ## 📝 Reflection
 
